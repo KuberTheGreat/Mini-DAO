@@ -1,23 +1,29 @@
-// SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
 
 import "forge-std/Test.sol";
+import "../src/MiniDAO.sol";
 
-import "src/Contract.sol";
-
-contract TestContract is Test {
-    Contract c;
+contract DAOTest is Test {
+    MinimalDAO dao;
 
     function setUp() public {
-        c = new Contract();
+        dao = new MiniDAO();
     }
 
-    function testBar() public {
-        assertEq(uint256(1), uint256(1), "ok");
+    function testCreateProposal() public {
+        dao.createProposal("Test Proposal");
+        (string memory desc,,) = dao.getProposal(0);
+        assertEq(desc, "Test Proposal");
     }
 
-    function testFoo(uint256 x) public {
-        vm.assume(x < type(uint128).max);
-        assertEq(x + x, x * 2);
+    function testVoteAndExecute() public {
+        dao.createProposal("Proposal #1");
+        dao.vote(0);
+        dao.executeProposal(0);
+
+        (,uint256 votes, bool executed) = dao.getProposal(0);
+        assertEq(votes, 1);
+        assertTrue(executed);
     }
 }
