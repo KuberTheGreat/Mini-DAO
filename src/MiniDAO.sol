@@ -11,6 +11,7 @@ contract MinimalDAO {
         bool executed;
         address payable recipient;
         uint amount;
+        address creator;
         mapping(address => bool) voted;
     }
 
@@ -20,14 +21,22 @@ contract MinimalDAO {
     mapping(address => bool) public members;
     uint public memberCount;
 
-    uint public constant VOTING_PERIOD = 3 days;
+    uint public constant VOTING_PERIOD = 1 days;
+
+    address public owner;
 
     modifier onlyMember() {
         require(members[msg.sender], "Not a DAO member");
         _;
     }
 
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not contract owner");
+        _;
+    }
+
     constructor() payable {
+        owner = msg.sender;
         members[msg.sender] = true;
         memberCount++;
     }
@@ -52,6 +61,7 @@ contract MinimalDAO {
         p.deadline = block.timestamp + VOTING_PERIOD;
         p.recipient = recipient;
         p.amount = amount;
+        p.creator = msg.sender;
     }
 
     // Vote on a proposal
@@ -69,6 +79,14 @@ contract MinimalDAO {
         }
     }
 
+    // End voting early (only creator can do this)
+    function endVoting(uint proposalId) external {
+        Proposal storage p = proposals[proposalId];
+        require(msg.sender == p.creator, "Only proposal creator can end voting");
+        require(block.timestamp < p.deadline, "Voting already ended");
+        p.deadline = block.timestamp; // closes voting immediately
+    }
+
     // Execute proposal if passed
     function executeProposal(uint proposalId) external onlyMember {
         Proposal storage p = proposals[proposalId];
@@ -83,6 +101,14 @@ contract MinimalDAO {
 
     // Deposit ETH into DAO treasury
     function deposit() external payable {}
+
+    // Withdraw function (only owner)
+    function withdraw(address payable to) external onlyOwner {
+        uint bal = address(this).balance;
+        require(bal > 0, "No funds to withdraw");
+        (bool sent, ) = to.call{value: bal}("");
+        require(sent, "Withdraw failed");
+    }
 
     // Get DAO balance
     function getBalance() external view returns (uint) {
