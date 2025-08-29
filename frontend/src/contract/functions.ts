@@ -1,19 +1,25 @@
+
+import { monadTestnet } from "viem/chains";
 import {ADDRESS, ABI} from "../utils/contract_data";
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
-
+import { createConfig, http, injected, readContract } from "@wagmi/core";
 // --- READ HOOKS ---
 
-export function useProposal(proposalId: bigint) {
-  const result =  useReadContract({
+export function  useProposal(_id: bigint) {
+  const result = useReadContract({
     abi: ABI,
     address: ADDRESS,
     functionName: "getProposal",
-    args: [proposalId],
+    args: [_id],
+    chainId: monadTestnet.id,
+    query: {
+      refetchInterval: 5000, // keep it fresh
+    },
   });
 
   let data = undefined;
   if (result.data) {
-    const [id, description, voteCount, proposer, executed] = result.data as [
+    const [id, description, yesCount, creator, executed] = result.data as [
       bigint,
       string,
       bigint,
@@ -21,19 +27,37 @@ export function useProposal(proposalId: bigint) {
       boolean
     ];
 
-    data = { id, description, voteCount, proposer, executed };
+    data = { id, description, yesCount, creator, executed };
   }
 
   return { ...result, data };
 }
 
+const config = createConfig({
+  chains: [monadTestnet],
+  connectors: [injected()],
+  transports: {
+      [monadTestnet.id]: http()
+  },
+})
 
-export function useProposalCount() {
-  return useReadContract({
-    abi: ABI,
-    address: ADDRESS,
-    functionName: "getProposalCount",
-  });
+export async function useProposalCount() {
+//   return useReadContract({
+//     abi: ABI,
+//     address: ADDRESS,
+//     functionName: "getProposalCount",
+//   });
+
+  try {
+    const count = await readContract(config, {
+      abi: ABI,
+      address: ADDRESS,
+      functionName: "proposalCount",
+    });
+    console.log("Proposal count from wagmi:", count);
+  } catch (err) {
+    console.error("Error reading proposal count:", err);
+  }
 }
 
 export function useDaoBalance() {

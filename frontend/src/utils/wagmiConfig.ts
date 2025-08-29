@@ -1,4 +1,4 @@
-import {mainnet, sepolia} from 'viem/chains';
+import {mainnet, sepolia, monadTestnet} from 'viem/chains';
 import {http} from 'wagmi';
 
 import {createConfig} from '@privy-io/wagmi';
