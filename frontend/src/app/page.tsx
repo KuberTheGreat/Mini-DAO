@@ -44,6 +44,7 @@ import WalletConnectButton from "@/components/WalletConnect";
 import CreateProposalForm from "@/components/CreateProposal";
 import ProposalList from "@/components/ProposalList";
 import JoinDao from "@/components/Join";
+import WalletInfo from "@/components/WalletInfo";
 
 export default function Home() {
   const handleCreateProposal = (title: string, description: string) => {
@@ -54,6 +55,7 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen gap-8 bg-gray-100">
       <WalletConnectButton />
+      <WalletInfo/>
       <JoinDao/>
       <CreateProposalForm />
       <ProposalList/>

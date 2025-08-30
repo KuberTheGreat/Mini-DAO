@@ -5,6 +5,7 @@ import { createConfig, http, injected, readContract, waitForTransactionReceipt, 
 import { ABI, ADDRESS } from "@/utils/contract_data";
 import { monadTestnet } from "viem/chains";
 import { useVote } from "@/contract/functions";
+import {useEnsName} from 'wagmi';
 
 const config = createConfig({
   chains: [monadTestnet],
