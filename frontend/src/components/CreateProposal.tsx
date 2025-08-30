@@ -23,14 +23,14 @@ export default function CreateProposalForm() {
 
   return (
     <div className="p-6 bg-white/10 rounded-2xl shadow-md w-full max-w-md">
-      <h2 className="text-xl font-semibold mb-4">Create Proposal</h2>
+      <h2 className="text-xl font-semibold mb-4 text-gray-800">Create Proposal</h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           type="text"
           placeholder="Proposal description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="p-2 rounded-xl border border-gray-300 bg-transparent"
+          className="p-2 rounded-xl border border-gray-300 bg-transparent text-gray-800 "
         />
 
         <input
@@ -38,7 +38,7 @@ export default function CreateProposalForm() {
           placeholder="Recipient address (0x...)"
           value={recipient}
           onChange={(e) => setRecipient(e.target.value)}
-          className="p-2 rounded-xl border border-gray-300 bg-transparent"
+          className="p-2 rounded-xl border border-gray-300 bg-transparent text-gray-800"
         />
 
         <input
@@ -46,7 +46,7 @@ export default function CreateProposalForm() {
           placeholder="Amount (wei)"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
-          className="p-2 rounded-xl border border-gray-300 bg-transparent"
+          className="p-2 rounded-xl border border-gray-300 bg-transparent text-gray-800"
         />
 
         <button

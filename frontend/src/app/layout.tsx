@@ -2,6 +2,7 @@
 
 import Providers from "@/components/Provider";
 import { PrivyProvider } from "@privy-io/react-auth";
+import './globals.css'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -78,13 +78,13 @@ export default function ProposalList() {
     //   )}
     // </div>
 
-    <div className="p-4 space-y-4">
-      <h2 className="text-xl font-bold">DAO Proposals</h2>
+    <div className="p-4 space-y-4 flex-center">
+      <h2 className="text-xl font-bold text-gray-800">DAO Proposals</h2>
 
       {loading && <p>Loading proposals...</p>}
 
       {!loading && proposals.length === 0 && (
-        <p className="text-gray-500">No proposals yet</p>
+        <p className="text-gray-800">No proposals yet</p>
       )}
 
       {proposals.map((p, idx) => (
@@ -92,34 +92,34 @@ export default function ProposalList() {
           key={idx}
           className="p-4 border rounded-lg shadow-sm bg-white"
         >
-          <h3 className="font-semibold">Proposal #{p[0]}</h3>
-          <p>{p[1]}</p>
-          <p>
-            <span className="font-medium">Yes Votes:</span>{" "}
+          <h3 className="font-semibold text-gray-800">Proposal #{p[0]}</h3>
+          <p className="text-gray-800">{p[1]}</p>
+          <p className="text-gray-800">
+            <span className="font-medium text-gray-800">Yes Votes:</span>{" "}
             {p[3]}
           </p>
-          <p>
-            <span className="font-medium">No Votes:</span>{" "}
+          <p className="text-gray-800">
+            <span className="font-medium text-gray-800">No Votes:</span>{" "}
             {p[4]}
           </p>
-          <p>
-            <span className="font-medium">Creator:</span> {p[8]}
+          <p className="text-gray-800"> 
+            <span className="font-medium text-gray-800">Creator:</span> {p[8]}
           </p>
           <p>
-            <span className="font-medium">Executed:</span>{" "}
+            <span className="font-medium text-gray-800">Executed:</span>{" "}
             {p[5] ? "✅" : "❌"}
           </p>
 
           <div className="flex gap-2 mt-2">
             <button
               onClick={() => vote(p[0], true)}
-              className="px-3 py-1 rounded-lg bg-green-500 text-white hover:bg-green-600"
+              className="px-3 py-1 rounded-lg bg-green-500 text-black hover:bg-green-600"
             >
               Vote Yes
             </button>
             <button
               onClick={() => vote(p[0], false)}
-              className="px-3 py-1 rounded-lg bg-red-500 text-white hover:bg-red-600"
+              className="px-3 py-1 rounded-lg bg-red-500 text-black hover:bg-red-600"
             >
               Vote No
             </button>
